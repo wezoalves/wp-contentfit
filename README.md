@@ -4,12 +4,11 @@ WP Content Fit is a plugin specifically developed for websites that produce cont
 
 ### Custom Post Types Available:
 
-- Tenis (/tenis)
+- Tennis (/tenis)
 - Store (/loja)
 - Food (/alimento)
 
-### Exemplo Instalação
-
+### Installation Example
 
 ##### Terminal
 ```bash
@@ -18,14 +17,13 @@ cd /path_wordpress/wp-content/plugins/;
 git clone `git@github.com:wezoalves/wp-contentfit.git`
 ``` 
 ##### WordPress Admin
-- Acessar Admin WordPress
-- Menu Plugins / Plugins Instalados
-- Encontrar na Lista: **WezoAlves - Content Fit**
-- Clicar no link Ativar
+- Access WordPress Admin
+- Navigate to Plugins / Installed Plugins
+- Find in the List: **WezoAlves - Content Fit**
+- Click on the Activate link
 
-Após a Ativação do Plugin - mo menu Geral exibirá:
+After Plugin Activation - the General menu will display:
 
 - Stores *(/wp-admin/edit.php?post_type=loja)*
-- Tenis *(/wp-admin/edit.php?post_type=tenis)*
+- Tennis *(/wp-admin/edit.php?post_type=tenis)*
 - Food *(/wp-admin/edit.php?post_type=alimento)*
-
