@@ -43,7 +43,6 @@ final class Foods
 
         add_action('add_meta_boxes', [self::class, 'add_meta_boxes']);
         add_action('save_post', [FoodsFields::class, 'saveMeta']);
-        //add_action('rest_api_init', [FoodsFields::class, 'registerCustomFields']);
         add_action('rest_api_init', [new \Review\Api\Food(), 'RestFoodApiInit']);
     }
 
@@ -60,4 +59,3 @@ final class Foods
     }
 }
 
-add_action('init', ['\Review\WordPress\CustomPostType\Foods', 'init']);

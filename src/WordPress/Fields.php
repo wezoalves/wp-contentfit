@@ -1,6 +1,7 @@
 <?php
 namespace Review\WordPress;
 
+use Review\WordPress\Elements\Select;
 
 class Fields
 {
@@ -8,20 +9,14 @@ class Fields
     {
         wp_nonce_field($post->post_type . '_nonce', $post->post_type . '_nonce');
         $meta = get_post_meta($post->ID);
-        $html = '<div class="inside"><table style="width:100%;display: flex;justify-content: space-evenly;">';
+        $html = '<div class="inside"><table style="width: 100%;display: flex;flex-direction: row;">';
         foreach ($fields as $field) :
-            $fieldId = $field->id;
-            $value = isset($meta[$fieldId][0]) ? $meta[$fieldId][0] : '';
-            $html .= <<<HTML
-            <tr>
-                <td style="width: 70%; margin-right:10px;">
-                    <label for="{$fieldId}">{$field->name}</label>
-                </td>
-                <td>
-                    <input type="{$field->type}" name="{$fieldId}" id="{$fieldId}" value="{$value}" class="components-text-control__input editor-text-editor" placeholder="{$field->placeholder}" />
-                </td>
-            </tr>
-            HTML;
+
+            $value = isset($meta[$field->id][0]) ? $meta[$field->id][0] : '';
+            $field->setValue($value);
+            $type = "\\Review\\WordPress\\Elements\\" . ucfirst($field->getType());
+            $html .= (new $type())->get($field);
+
         endforeach;
         echo $html . "</table></div>";
     }
@@ -48,15 +43,38 @@ class Fields
             if (isset($_POST[$fieldId])) {
                 $postValue = $_POST[$fieldId];
 
-                // validate type number
-                if ($field->getType() == "number") :
-                    update_post_meta($post_id, $fieldId, floatval($postValue));
+                if ($field->getId() != "customoffer") :
+                    update_post_meta($post_id, $fieldId, $postValue);
                 endif;
 
-                // validate type text
-                if ($field->getType() == "text") :
-                    update_post_meta($post_id, $fieldId, sanitize_text_field($postValue));
+                if ($field->getId() == "customoffer") :
+
+                    $offers = [];
+                    if (isset($_POST[$field->getType()])) {
+                        foreach ($_POST[$field->getType()] as $key => $value) {
+                            if (! empty($value['store']) || ! empty($value['price']) || ! empty($value['url'])) {
+                                $offers[] = [
+                                    'store' => sanitize_text_field($value['store']),
+                                    'price' => floatval($value['price']),
+                                    'url' => esc_url_raw($value['url'])
+                                ];
+                            }
+                        }
+                    }
+                    update_post_meta($post_id, $field->getType(), serialize($offers));
                 endif;
+
+
+
+                // // validate type number
+                // if ($field->getType() == "number") :
+                //     update_post_meta($post_id, $fieldId, floatval($postValue));
+                // endif;
+
+                // // validate type text
+                // if ($field->getType() == "text") :
+                //     update_post_meta($post_id, $fieldId, sanitize_text_field($postValue));
+                // endif;
             }
         }
     }

@@ -1,48 +1,69 @@
-# Wordpress - ignore core, configuration, examples, uploads and logs.
-# https://github.com/github/gitignore/blob/main/WordPress.gitignore
+# Ignore arquivos gerados pelo Composer
+/vendor/
+composer.lock
 
-# Core
-#
-# Note: if you want to stage/commit WP core files
-# you can delete this whole section/until Configuration.
-/wp-admin/
-/wp-content/index.php
-/wp-content/languages
-/wp-content/plugins/index.php
-/wp-content/themes/index.php
-/wp-includes/
-/index.php
-/license.txt
-/readme.html
-/wp-*.php
-/xmlrpc.php
-
-# Configuration
-wp-config.php
-
-# Example themes
-/wp-content/themes/twenty*/
-
-# Example plugin
-/wp-content/plugins/hello.php
-
-# Uploads
+# Ignore arquivos do WordPress
 /wp-content/uploads/
+/wp-content/upgrade/
+/wp-content/backup-db/
+/wp-content/advanced-cache.php
+/wp-content/wp-cache-config.php
+/wp-content/cache/
+/wp-content/debug.log
 
-# Log files
+# Ignore arquivos e diretórios do sistema
+*.DS_Store
 *.log
+*.idea/
+*.vscode/
+Thumbs.db
+ehthumbs.db
+*.swp
+*.bak
+*.backup
+*.tmp
+*.temp
+*.orig
+*.save
+*.sublime-project
+*.sublime-workspace
 
-# htaccess
-/.htaccess
+# Ignore arquivos de configuração do sistema operacional
+desktop.ini
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
 
-# All plugins
-#
-# Note: If you wish to whitelist plugins,
-# uncomment the next line
-#/wp-content/plugins
+# Ignore arquivos do npm e node.js (se houver)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# All themes
-#
-# Note: If you wish to whitelist themes,
-# uncomment the next line
-#/wp-content/themes
+# Ignore arquivos do ambiente local
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignore arquivos de deploy
+.deploy/
+.deploy*/**
+
+# Ignore arquivos temporários
+*.log
+*.tmp
+
+# Ignore arquivos do PHPUnit (se usar)
+phpunit.xml
+phpunit.xml.dist
+
+# Ignore outros arquivos temporários
+*.log
+*.sql
+*.sqlite
+
+# Ignore arquivos de configuração do servidor (se necessário)
+.htaccess

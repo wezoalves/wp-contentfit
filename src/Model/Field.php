@@ -6,18 +6,20 @@ final class Field
 {
     public string $id;
     public string $name;
-    public string $type;
+    public string $type = "text";
     public string|null $group = "";
-    public string|null $value = null;
     public string|null $placeholder = "";
+    public $value = null;
+    public array $options = [];
 
     public function __construct(
         string $id,
         string $type,
         string $name,
         string $placeholder = "",
-        string $value = null,
-        string $group = "")
+        $value = null,
+        string $group = "",
+        $options = [])
     {
         $this->id = $id;
         $this->type = $type;
@@ -25,14 +27,15 @@ final class Field
         $this->placeholder = $placeholder;
         $this->value = $value;
         $this->group = $group;
+        $this->options = $options;
     }
 
     /**
      * Get the value of value
      *
-     * @return string
+     * @return any
      */
-    public function getValue() : string
+    public function getValue()
     {
         return $this->value;
     }
@@ -40,11 +43,11 @@ final class Field
     /**
      * Set the value of value
      *
-     * @param string $value
+     * @param any $value
      *
      * @return self
      */
-    public function setValue(string $value) : self
+    public function setValue($value) : self
     {
         $this->value = $value;
 
@@ -152,7 +155,7 @@ final class Field
      *
      * @return string
      */
-    public function getGroup(): string
+    public function getGroup() : string
     {
         return $this->group;
     }
@@ -164,9 +167,33 @@ final class Field
      *
      * @return self
      */
-    public function setGroup(string $group): self
+    public function setGroup(string $group) : self
     {
         $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of options
+     *
+     * @return array
+     */
+    public function getOptions() : array
+    {
+        return $this->options;
+    }
+
+    /**
+     * Set the value of options
+     *
+     * @param array $options
+     *
+     * @return self
+     */
+    public function setOptions(array $options) : self
+    {
+        $this->options = $options;
 
         return $this;
     }

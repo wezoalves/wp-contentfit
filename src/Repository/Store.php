@@ -122,7 +122,6 @@ final class Store
                     "ra_shortname" => $ra_shortname,
                     "ra_storeid" => $ra_storeid,
                     "ra_score" => $ra_score,
-                    //"programas" => $programs,
                     "affiliatePrograms" => $programsList,
                 ];
 

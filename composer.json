@@ -1,0 +1,11 @@
+{
+    "name": "wezoalves/contentfit",
+    "description": "WP Content Fit is a plugin specifically developed for websites that produce content about fitness and well-being.",
+    "type": "wordpress-plugin",
+    "autoload": {
+        "psr-4": {
+            "Review\\": "src/"
+        }
+    },
+    "require": {}
+}
