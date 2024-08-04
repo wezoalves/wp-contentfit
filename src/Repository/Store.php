@@ -169,7 +169,7 @@ final class Store
                         $programsList[] = (new \Review\Model\AffiliateProgram())
                             ->setAdvertiserId($program['advertiser_id'])
                             ->setPublisherId($program['publisher_id'])
-                            ->setComission($program['comission']??0)
+                            ->setComission(intval($program['comission']))
                             ->setPlatform($program['platform']);
                     endforeach;
                 endif;
