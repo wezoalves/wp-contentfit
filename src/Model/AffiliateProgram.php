@@ -9,7 +9,7 @@ final class AffiliateProgram
     public string $platform;
     public string $advertiserId;
     public string $publisherId;
-    public int $comission;
+    public int|null $comission;
 
     public function getPlatform()
     {
