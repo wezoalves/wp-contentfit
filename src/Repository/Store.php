@@ -162,7 +162,7 @@ final class Store
                 $programs = $programs ? $programs : null;
 
                 $programsList = [];
-                if ($programs) :
+                if ($programs && !empty($programs)) :
                     foreach ($programs as $program) :
                         $programsList[] = (new \Review\Model\AffiliateProgram())
                             ->setAdvertiserId($program['advertiser_id'])
