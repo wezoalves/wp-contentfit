@@ -15,6 +15,7 @@ final class Store
         $key = \Review\WordPress\CustomPostType\Store::getKey();
         $post_image = get_the_post_thumbnail_url(get_the_ID(), 'full');
         $type = get_post_meta($post->ID, $key . '_type', true);
+        $type = \Review\Utils\TypeStore::getById($type);
         $logosvg = get_post_meta($post->ID, $key . '_logosvg', true);
         $description = get_post_meta($post->ID, $key . '_description', true);
         $domain = get_post_meta($post->ID, $key . '_domain', true);
@@ -56,16 +57,16 @@ final class Store
             ->setAffiliatePrograms($programsList);
     }
 
-    public function getAll()
+    public function getAll($query = [
+        'post_type' => 'loja',
+        'posts_per_page' => -1,
+        'post_status' => 'publish',
+    ])
     {
 
         $key = \Review\WordPress\CustomPostType\Store::getKey();
 
-        $query = new \WP_Query([
-            'post_type' => 'loja',
-            'posts_per_page' => -1,
-            'post_status' => 'publish',
-        ]);
+        $query = new \WP_Query($query);
 
         $stores = [];
         if ($query->have_posts()) {
