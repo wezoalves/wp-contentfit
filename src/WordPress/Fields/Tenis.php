@@ -42,18 +42,15 @@ final class Tenis extends Fields
 
             new Field("{$key}_priceregular", "number", "Preço Regular", "", null, "PRICE"),
 
-            new Field("{$key}_images", "text", "Imagens", "", null, "MEDIA"),
-
             new Field("{$key}_description", "textarea", "Descrição", "", null, "DETAIL"),
             new Field("{$key}_benefits", "textarea", "Benefícios", "", null, "DETAIL"),
             new Field("{$key}_characteristics", "textarea", "Características Técnicas", "", null, "DETAIL"),
-
             new Field("{$key}_offers", "customoffer", "Ofertas", "", null, "OFFER", $stores),
-
-            new Field("{$key}_classification", "hidden", "Classificação Global", "", null, "DETAIL"),
+            new Field("{$key}_classification", "legacy", "Classificação Global", "", null, "DETAIL"),
 
         ];
 
+        // add classification fields based in rating tenis
         foreach ((\Review\Utils\RatingTenis::getAll()) as $typeScore) :
             $typeScore = (object) $typeScore;
             $fields[] = new Field("{$key}_{$typeScore->id}", "range", $typeScore->name, "", null, "DETAIL");

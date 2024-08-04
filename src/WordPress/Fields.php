@@ -1,15 +1,13 @@
 <?php
 namespace Review\WordPress;
 
-use Review\WordPress\Elements\Select;
-
 class Fields
 {
     public static function show_meta_box($post, $fields = [])
     {
         wp_nonce_field($post->post_type . '_nonce', $post->post_type . '_nonce');
         $meta = get_post_meta($post->ID);
-        $html = '<div class="inside"><table style="width: 100%;display: flex;flex-direction: row;">';
+        $html = '<div class="inside"><table class="table-review">';
         foreach ($fields as $field) :
 
             $value = isset($meta[$field->id][0]) ? $meta[$field->id][0] : '';
@@ -43,12 +41,13 @@ class Fields
             if (isset($_POST[$fieldId])) {
                 $postValue = $_POST[$fieldId];
 
+                // default
                 if ($field->getId() != "customoffer") :
                     update_post_meta($post_id, $fieldId, $postValue);
                 endif;
 
+                // filter offers
                 if ($field->getId() == "customoffer") :
-
                     $offers = [];
                     if (isset($_POST[$field->getType()])) {
                         foreach ($_POST[$field->getType()] as $key => $value) {
@@ -64,17 +63,25 @@ class Fields
                     update_post_meta($post_id, $field->getType(), serialize($offers));
                 endif;
 
+                // filter programs
+                if ($field->getId() == "customprograms") :
+                    $programs = [];
+                    if (isset($_POST[$field->getType()])) {
+                        foreach ($_POST[$field->getType()] as $key => $value) {
+                            if (! empty($value['advertiser_id']) || ! empty($value['comission']) ||
+                                ! empty($value['platform']) || ! empty($value['publisher_id'])) {
+                                $programs[] = [
+                                    'platform' => sanitize_text_field($value['platform']),
+                                    'comission' => floatval($value['comission']),
+                                    'advertiser_id' => sanitize_text_field($value['advertiser_id']),
+                                    'publisher_id' => sanitize_text_field($value['publisher_id']),
+                                ];
+                            }
+                        }
+                    }
+                    update_post_meta($post_id, $field->getType(), serialize($programs));
+                endif;
 
-
-                // // validate type number
-                // if ($field->getType() == "number") :
-                //     update_post_meta($post_id, $fieldId, floatval($postValue));
-                // endif;
-
-                // // validate type text
-                // if ($field->getType() == "text") :
-                //     update_post_meta($post_id, $fieldId, sanitize_text_field($postValue));
-                // endif;
             }
         }
     }

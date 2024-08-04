@@ -12,8 +12,7 @@ final class Programs
     public function getAll() : array
     {
         $programs = [];
-
-        $directory = new \RecursiveDirectoryIterator(__DIR__ . '/src/Affiliate');
+        $directory = new \RecursiveDirectoryIterator(plugin_dir_path(__FILE__));
         $iterator = new \RecursiveIteratorIterator($directory);
         $regex = new \RegexIterator($iterator, '/^.+\.php$/i', \RecursiveRegexIterator::GET_MATCH);
 

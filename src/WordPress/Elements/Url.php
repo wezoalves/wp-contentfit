@@ -4,7 +4,7 @@ namespace Review\WordPress\Elements;
 
 use Review\Model\Field;
 
-final class Number
+final class Url
 {
 
     public function get(Field $field) : string
@@ -17,8 +17,8 @@ final class Number
                 <label for="{$field->id}">{$field->name} {$field->placeholder}</label>
             </td>
             <td>
-                
-            <input type="number" name="{$field->id}" id="{$field->id}" value="{$field->value}" class="regular-text" placeholder="{$field->placeholder}"/>
+
+                <input type="url" name="{$field->id}" id="{$field->id}" value="{$field->value}" class="regular-text" placeholder="{$field->placeholder}"/>
 
             </td>
         </tr>

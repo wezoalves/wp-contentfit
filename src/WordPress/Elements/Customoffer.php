@@ -8,8 +8,25 @@ final class Customoffer
 {
     public function get(Field $field) : string
     {
-        $values = unserialize($field->value);
+        $values = is_serialized($field->value) ? unserialize($field->value) : null;
         $values = $values ? $values : [['store' => 0, 'price' => '', 'url' => '']];
+
+        // fix old names to new
+        // todo: remove after update all itens in prod
+        $tmpValues = [];
+        foreach ($values as $value) :
+            if (isset($value['loja']) && isset($value['preco'])) :
+                $tmpValues[] = [
+                    'store' => $value['loja'],
+                    'price' => $value['preco'],
+                    'url' => $value['url']
+                ];
+            else :
+                $tmpValues[] = $value;
+            endif;
+        endforeach;
+        $values = $tmpValues;
+        // End fix old names to new
 
         $tr = <<<HTML
         <tr>

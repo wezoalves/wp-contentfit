@@ -29,3 +29,52 @@
     text-transform: uppercase;
     font-weight: 800;
 }
+
+
+
+
+/* new */
+.form-grid {
+    display: grid;
+    justify-items: stretch;
+}
+
+.field-half {
+    width: 100%;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.field-full {
+    width: 100%;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.fieldset {
+    padding: 15px;
+    margin: 15px auto;
+    border: 1px solid #ccc;
+}
+
+.separator {
+    border: 1px solid #c9c9c9;
+    border-style: solid;
+    border-width: 1px 0 0 0;
+    width: 100%;
+    margin: 15px 0 30px 0;
+}
+
+.table-review {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.table-review td {
+    vertical-align: top;
+    padding-top: 20px;
+    padding-right: 20px;
+}
+
+/* end new */
