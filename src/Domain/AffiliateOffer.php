@@ -41,9 +41,9 @@ final class AffiliateOffer
         $url = $this->url;
         $storeProgram = (new Store())->getById($this->storeId);
 
-        if (isset($storeProgram['affiliatePrograms']) && !empty($storeProgram['affiliatePrograms'])) {
+        if (!empty($storeProgram->getAffiliatePrograms())) {
 
-            $bestProgram = $this->getBestProgram($storeProgram['affiliatePrograms']);
+            $bestProgram = $this->getBestProgram($storeProgram->getAffiliatePrograms());
 
             // Construct the URL using the best affiliate program
             if ($bestProgram->getPlatform()) {
