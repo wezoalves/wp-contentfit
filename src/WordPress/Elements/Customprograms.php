@@ -104,7 +104,6 @@ final class Customprograms
         });
         </script>
         HTML;
-
         return $tr;
     }
 }

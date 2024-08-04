@@ -4,57 +4,57 @@ namespace Review\WordPress\Fields;
 
 use Review\Model\Field;
 use Review\WordPress\Fields;
+use Review\Repository\Store;
+use Review\Utils\TypeTenis;
+use Review\Utils\RatingTenis;
 
 final class Tenis extends Fields
 {
     public static function fields()
     {
-
-
         $key = \Review\WordPress\CustomPostType\Tenis::getKey();
 
-        $brands = array_map(function ($brand) {
+        
+        $brands = array_map(function (\Review\Model\Store $brand) {
             return [
-                'id' => $brand['id'],
-                'title' => $brand['title']
+                'id' => $brand->getId(),
+                'title' => $brand->getTitle()
             ];
-        }, (new \Review\Repository\Store())->getAll());
+        }, (new Store())->getByType(['BRAND']));
 
-        $stores = array_map(function ($brand) {
+        
+        $stores = array_map(function (\Review\Model\Store $store) {
             return [
-                'id' => $brand['id'],
-                'title' => $brand['title']
+                'id' => $store->getId(),
+                'title' => $store->getTitle()
             ];
-        }, (new \Review\Repository\Store())->getAll());
+        }, (new Store())->getByType(['BRAND','MULTIBRAND']));
 
+        
         $types = array_map(function ($type) {
             return [
                 'id' => $type->getId(),
                 'title' => $type->getName()
             ];
-        }, \Review\Utils\TypeTenis::getAll());
+        }, TypeTenis::getAll());
 
-
+        
         $fields = [
-
             new Field("{$key}_brand", "select", "Marca", "", null, "TYPE", $brands),
             new Field("{$key}_type", "select", "Tipo", "", null, "TYPE", $types),
-
             new Field("{$key}_priceregular", "number", "Preço Regular", "", null, "PRICE"),
-
             new Field("{$key}_description", "textarea", "Descrição", "", null, "DETAIL"),
             new Field("{$key}_benefits", "textarea", "Benefícios", "", null, "DETAIL"),
             new Field("{$key}_characteristics", "textarea", "Características Técnicas", "", null, "DETAIL"),
             new Field("{$key}_offers", "customoffer", "Ofertas", "", null, "OFFER", $stores),
             new Field("{$key}_classification", "legacy", "Classificação Global", "", null, "DETAIL"),
-
         ];
 
-        // add classification fields based in rating tenis
-        foreach ((\Review\Utils\RatingTenis::getAll()) as $typeScore) :
+        
+        foreach (RatingTenis::getAll() as $typeScore) {
             $typeScore = (object) $typeScore;
             $fields[] = new Field("{$key}_{$typeScore->id}", "range", $typeScore->name, "", null, "DETAIL");
-        endforeach;
+        }
 
         return $fields;
     }

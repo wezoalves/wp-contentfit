@@ -6,25 +6,18 @@ use Review\Model\Field;
 
 final class Url
 {
-
     public function get(Field $field) : string
     {
-
-        // make row table
         $tr = <<<HTML
         <tr>
             <td>
                 <label for="{$field->id}">{$field->name} {$field->placeholder}</label>
             </td>
             <td>
-
                 <input type="url" name="{$field->id}" id="{$field->id}" value="{$field->value}" class="regular-text" placeholder="{$field->placeholder}"/>
-
             </td>
         </tr>
-        
         HTML;
         return $tr;
     }
-
 }

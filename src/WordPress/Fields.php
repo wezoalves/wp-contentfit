@@ -42,7 +42,7 @@ class Fields
                 $postValue = $_POST[$fieldId];
 
                 // default
-                if ($field->getId() != "customoffer") :
+                if ($field->getId() != "customoffer" && $field->getId() != "customprograms") :
                     update_post_meta($post_id, $fieldId, $postValue);
                 endif;
 

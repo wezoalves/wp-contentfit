@@ -12,7 +12,7 @@ final class Customoffer
         $values = $values ? $values : [['store' => 0, 'price' => '', 'url' => '']];
 
         // fix old names to new
-        // todo: remove after update all itens in prod
+        // TODO remove after update all itens in prod
         $tmpValues = [];
         foreach ($values as $value) :
             if (isset($value['loja']) && isset($value['preco'])) :
@@ -78,11 +78,6 @@ final class Customoffer
                     </div>
                     <button class="add-oferta button">Adicionar Oferta</button>
                 </fieldset>
-                <fieldset style="background-color: #eeeeee;margin-bottom:15px; border: 1px solid red; padding:20px;">
-                    <legend>Debug: {$field->name}</legend>
-                    <textarea type="{$field->type}" name="debug_{$field->id}" id="debug_{$field->id}" rows="5" class="large-text" style="width: 100%;">{$field->value}</textarea>
-                </fieldset>
-                <hr />
             </td>
         </tr>
         HTML;
@@ -115,15 +110,7 @@ final class Customoffer
             });
         });
         </script>
-        <style>
-            .form-grid { display: grid; justify-items: stretch; }
-            .field-half { width: 100%; display: block; margin-bottom: 5px; }
-            .field-full { width: 100%; display: block; margin-bottom: 5px; }
-            .fieldset { padding: 15px; margin: 15px auto; border: 1px solid #ccc; }
-            .separator { border: 1px solid #c9c9c9; border-style: solid; border-width: 1px 0 0 0; width: 100%; margin: 15px 0 30px 0; }
-        </style>
         HTML;
-
         return $tr;
     }
 }
