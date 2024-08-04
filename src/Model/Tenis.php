@@ -4,7 +4,7 @@ namespace Review\Model;
 
 use Review\Model\TenisType;
 use Review\Model\Offer;
-
+use Review\Model\Store;
 final class Tenis
 {
     private string|null $id = null;
@@ -21,7 +21,7 @@ final class Tenis
     private float $priceRegular = 0.0;
     private Offer|null $offerBest = null;
     private array|null $offers = null;
-    private array|null $brand = null;
+    private Store|null $brand = null;
     private string|null $title = null;
     private string|null $content = null;
     private string|null $link = null;
@@ -41,7 +41,7 @@ final class Tenis
         float $priceRegular,
         Offer $offerBest,
         array $offers,
-        array $brand,
+        Store $brand,
         string $title,
         string $content,
         string $link
@@ -137,7 +137,7 @@ final class Tenis
         return $this->offers;
     }
 
-    public function getBrand() : ?array
+    public function getBrand() : ?Store
     {
         return $this->brand;
     }
@@ -240,7 +240,7 @@ final class Tenis
         return $this;
     }
 
-    public function setBrand(?array $brand) : self
+    public function setBrand(?Store $brand) : self
     {
         $this->brand = $brand;
         return $this;
