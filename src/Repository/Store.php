@@ -161,8 +161,6 @@ final class Store
                 $programs = get_post_meta($post->ID, $key . '_affiliate', true);
                 $programs = $programs ? $programs : null;
 
-                echo('<pre>');var_dump($programs);echo('</pre>');
-
                 $programsList = [];
                 if ($programs && !empty($programs)) :
                     foreach ($programs as $program) :
