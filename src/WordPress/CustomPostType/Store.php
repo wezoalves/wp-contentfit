@@ -7,7 +7,12 @@ use Review\WordPress\Fields\Store as StoreFields;
 final class Store implements \Review\Interface\CustomPostTypeInterface
 {
     private static string $key = "store";
+    private static string $slug = "loja";
 
+    public static function getSlug() : string
+    {
+        return self::$slug;
+    }
     public static function getKey() : string
     {
         return self::$key;

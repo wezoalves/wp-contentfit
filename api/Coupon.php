@@ -2,26 +2,33 @@
 
 namespace ReviewApi;
 
-final class Coupon extends \ReviewApi\Request
+final class Coupon extends \ReviewApi\Request implements \Review\Interface\ApiInterface
 {
+
+    function getFieldValidator() : string
+    {
+        return \Review\WordPress\CustomPostType\Coupon::getKey() . "_promotionId";
+    }
     function create(\WP_REST_Request $request)
     {
         $auth_result = $this->authenticate($request);
+
         if (is_wp_error($auth_result)) {
             return $auth_result;
         }
 
-        if ($request->has_param('promotionId')) :
+        if ($request->has_param($this->getFieldValidator())) :
             return $this->createItem($request);
         endif;
     }
 
     private function createItem(\WP_REST_Request $request)
     {
+
         $args = array(
-            'post_type' => \Review\WordPress\CustomPostType\Coupon::getKey(),
-            'meta_key' => 'promotionId',
-            'meta_value' => $request->get_param('promotionId'),
+            'post_type' => \Review\WordPress\CustomPostType\Coupon::getSlug(),
+            'meta_key' => $this->getFieldValidator(),
+            'meta_value' => $request->get_param($this->getFieldValidator()),
             'meta_compare' => '=',
             'numberposts' => 1,
         );
@@ -39,16 +46,30 @@ final class Coupon extends \ReviewApi\Request
             $meta_input[$field->getId()] = $request->get_param($field->getId()) ?? null;
         endforeach;
 
-        $post_title = $request->get_param('title');
-        $post_title = strtr($post_title, ['.' => '', '  ' => ' ']);
-        $post_content = $request->get_param('description');
-        $post_content = strtr($post_content, ['.' => '', '  ' => ' ']);
 
-        $user = get_user_by('login', 'weslley');
-        $post_author = $user->ID;
+        $urlCupom = $meta_input['coupon_url'] ?? null;
+        $urlCoupon = $this->getDomain($urlCupom);
+
+        $store = (new \Review\Repository\Store())->getByDomain($urlCoupon);
+
+        if(!$store){
+            return rest_ensure_response(new \WP_REST_Response("store not found {$urlCoupon}", 500));
+        }
+
+        $meta_input['coupon_store'] = $store->getId();
+
+
+        $post_title = $request->get_param('title');
+        $post_title = ucfirst(mb_strtolower($post_title));
+        $post_title = strtr($post_title, [
+            "r$" => "R$ ",
+            "off" => "OFF "
+        ]);
+        $post_content = $request->get_param('description');
+        $post_author = (new \Review\Repository\User())->getUserDefault()->ID;
 
         $data = array(
-            'post_type' => \Review\WordPress\CustomPostType\Coupon::getKey(),
+            'post_type' => \Review\WordPress\CustomPostType\Coupon::getSlug(),
             'post_title' => $post_title,
             'post_content' => $post_content,
             'post_author' => $post_author,
@@ -111,6 +132,11 @@ final class Coupon extends \ReviewApi\Request
             $search_term
         );
         return rest_ensure_response($foods);
+    }
+
+    function delete(\WP_REST_Request $request)
+    {
+
     }
 
     public function RestApiInit()

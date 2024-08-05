@@ -2,8 +2,13 @@
 
 namespace ReviewApi;
 
-final class Food extends \ReviewApi\Request
+final class Food extends \ReviewApi\Request implements \Review\Interface\ApiInterface
 {
+
+    function getFieldValidator() : string
+    {
+        return "alimento_id";
+    }
     function create(\WP_REST_Request $request)
     {
         $auth_result = $this->authenticate($request);
@@ -11,7 +16,7 @@ final class Food extends \ReviewApi\Request
             return $auth_result;
         }
 
-        if ($request->has_param('alimento_id')) :
+        if ($request->has_param($this->getFieldValidator())) :
             return $this->createFood($request);
         endif;
     }
@@ -20,8 +25,8 @@ final class Food extends \ReviewApi\Request
     {
         $args = array(
             'post_type' => \Review\WordPress\CustomPostType\Foods::getKey(),
-            'meta_key' => 'alimento_id',
-            'meta_value' => $request->get_param('alimento_id'),
+            'meta_key' => $this->getFieldValidator(),
+            'meta_value' => $request->get_param($this->getFieldValidator()),
             'meta_compare' => '=',
             'numberposts' => 1,
         );

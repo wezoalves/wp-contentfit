@@ -6,8 +6,13 @@ use Review\WordPress\Fields\Example as ExampleFields;
 
 final class Example implements \Review\Interface\CustomPostTypeInterface
 {
-    private static string $key = "slug_custom_post_type";
+    private static string $key = "key_custom_post_type";
+    private static string $slug = "slug_custom_post_type";
 
+    public static function getSlug() : string
+    {
+        return self::$slug;
+    }
     public static function getKey() : string
     {
         return self::$key;

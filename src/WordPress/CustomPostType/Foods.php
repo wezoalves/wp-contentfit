@@ -8,7 +8,12 @@ use ReviewApi\Food as FoodApi;
 final class Foods implements \Review\Interface\CustomPostTypeInterface
 {
     private static string $key = "alimento";
+    private static string $slug = "alimento";
 
+    public static function getSlug() : string
+    {
+        return self::$slug;
+    }
     public static function getKey() : string
     {
         return self::$key;

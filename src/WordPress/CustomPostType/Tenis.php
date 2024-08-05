@@ -7,7 +7,12 @@ use Review\WordPress\Fields\Tenis as TenisFields;
 final class Tenis implements \Review\Interface\CustomPostTypeInterface
 {
     private static string $key = "tenis";
+    private static string $slug = "tenis";
 
+    public static function getSlug() : string
+    {
+        return self::$slug;
+    }
     public static function getKey() : string
     {
         return self::$key;

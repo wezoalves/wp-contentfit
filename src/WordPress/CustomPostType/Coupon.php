@@ -10,6 +10,10 @@ final class Coupon implements \Review\Interface\CustomPostTypeInterface
     private static string $key = "coupon";
     private static string $slug = "cupom";
 
+    public static function getSlug() : string
+    {
+        return self::$slug;
+    }
     public static function getKey() : string
     {
         return self::$key;
@@ -41,7 +45,7 @@ final class Coupon implements \Review\Interface\CustomPostTypeInterface
             'show_in_rest' => true
         );
 
-        register_post_type(self::$slug, $args);
+        register_post_type(self::getSlug(), $args);
 
         add_action('add_meta_boxes', [self::class, 'add_meta_boxes']);
         add_action('save_post', [CouponFields::class, 'saveMeta']);
@@ -54,7 +58,7 @@ final class Coupon implements \Review\Interface\CustomPostTypeInterface
             self::$key . '_meta_box',
             'Detalhes do Cupom',
             [CouponFields::class, 'showMetaBox'],
-            self::$slug,
+            self::getSlug(),
             'advanced',
             'default'
         );

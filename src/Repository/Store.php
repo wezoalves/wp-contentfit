@@ -162,7 +162,7 @@ final class Store
                 $programs = $programs ? $programs : null;
 
                 $programsList = [];
-                if ($programs && !empty($programs)) :
+                if ($programs && ! empty($programs)) :
                     foreach ($programs as $program) :
                         $programsList[] = (new \Review\Model\AffiliateProgram())
                             ->setAdvertiserId($program['advertiser_id'])
@@ -194,5 +194,68 @@ final class Store
             wp_reset_postdata();
         }
         return $stores;
+    }
+    public function getByDomain($domain)
+    {
+        $key = \Review\WordPress\CustomPostType\Store::getKey();
+        $slug = \Review\WordPress\CustomPostType\Store::getSlug();
+
+        $metaQuery[] = [
+            'key' => 'store_domain',
+            'value' => $domain,
+            'compare' => '=='
+        ];
+
+        $query = new \WP_Query([
+            'post_type' => $slug,
+            'posts_per_page' => 1,
+            'post_status' => 'publish',
+            'meta_query' => $metaQuery
+        ]);
+
+        if ($query->have_posts()) {
+            while ($query->have_posts()) {
+
+                $query->the_post();
+
+                $post = get_post(get_the_ID());
+
+                if (! $post) {
+                    return null;
+                }
+
+                $key = \Review\WordPress\CustomPostType\Store::getKey();
+
+                $type = get_post_meta($post->ID, $key . '_type', true);
+                $type = \Review\Utils\TypeStore::getById($type);
+                $domain = get_post_meta($post->ID, $key . '_domain', true);
+                $url = get_post_meta($post->ID, $key . '_url', true);
+                $programs = get_post_meta($post->ID, $key . '_affiliate', true);
+                $programs = $programs ? $programs : null;
+
+                $programsList = [];
+                if ($programs) :
+                    foreach ($programs as $program) :
+                        $programsList[] = (new \Review\Model\AffiliateProgram())
+                            ->setAdvertiserId($program['advertiser_id'])
+                            ->setPublisherId($program['publisher_id'])
+                            ->setComission(intval($program['comission']))
+                            ->setPlatform($program['platform']);
+                    endforeach;
+                endif;
+
+                return (new \Review\Model\Store())
+                    ->setId($post->ID)
+                    ->setKeyCpt($key)
+                    ->setType($type)
+                    ->setTitle(get_the_title($post->ID))
+                    ->setLink(get_permalink($post->ID))
+                    ->setDomain($domain)
+                    ->setUrl($url)
+                    ->setAffiliatePrograms($programsList);
+            }
+        }
+        wp_reset_postdata();
+        return null;
     }
 }
