@@ -4,7 +4,8 @@
     "type": "wordpress-plugin",
     "autoload": {
         "psr-4": {
-            "Review\\": "src/"
+            "Review\\": "src/",
+            "ReviewApi\\": "api/"
         }
     },
     "require": {}

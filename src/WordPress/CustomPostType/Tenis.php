@@ -4,15 +4,15 @@ namespace Review\WordPress\CustomPostType;
 
 use Review\WordPress\Fields\Tenis as TenisFields;
 
-final class Tenis
+final class Tenis implements \Review\Interface\CustomPostTypeInterface
 {
     private static string $key = "tenis";
 
-    public static function getKey()
+    public static function getKey() : string
     {
         return self::$key;
     }
-    public static function init()
+    public static function init() : void
     {
         $labels = array(
             'name' => 'Tênis',
@@ -46,7 +46,7 @@ final class Tenis
         add_action('save_post', [TenisFields::class, 'saveMeta']);
 
     }
-    public static function add_meta_boxes()
+    public static function add_meta_boxes() : void
     {
         add_meta_box(
             self::$key . '_meta_box',

@@ -4,7 +4,7 @@ namespace Review\WordPress\Elements;
 
 use Review\Model\Field;
 
-final class Customprograms
+final class Customprograms implements \Review\Interface\ElementsInterface
 {
     public function get(Field $field) : string
     {

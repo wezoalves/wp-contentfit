@@ -2,7 +2,7 @@
 
 namespace ReviewApi;
 
-final class Food extends \ReviewApi\Request
+final class Coupon extends \ReviewApi\Request
 {
     function create(\WP_REST_Request $request)
     {
@@ -11,17 +11,17 @@ final class Food extends \ReviewApi\Request
             return $auth_result;
         }
 
-        if ($request->has_param('alimento_id')) :
-            return $this->createFood($request);
+        if ($request->has_param('promotionId')) :
+            return $this->createItem($request);
         endif;
     }
 
-    private function createFood(\WP_REST_Request $request)
+    private function createItem(\WP_REST_Request $request)
     {
         $args = array(
-            'post_type' => \Review\WordPress\CustomPostType\Foods::getKey(),
-            'meta_key' => 'alimento_id',
-            'meta_value' => $request->get_param('alimento_id'),
+            'post_type' => \Review\WordPress\CustomPostType\Coupon::getKey(),
+            'meta_key' => 'promotionId',
+            'meta_value' => $request->get_param('promotionId'),
             'meta_compare' => '=',
             'numberposts' => 1,
         );
@@ -34,23 +34,23 @@ final class Food extends \ReviewApi\Request
         }
 
         $meta_input = [];
-        $fields = (new \Review\WordPress\Fields\Foods())->fields();
+        $fields = (new \Review\WordPress\Fields\Coupon())->fields();
         foreach ($fields as $field) :
             $meta_input[$field->getId()] = $request->get_param($field->getId()) ?? null;
         endforeach;
 
         $post_title = $request->get_param('title');
         $post_title = strtr($post_title, ['.' => '', '  ' => ' ']);
-        $post_excerpt = $request->get_param('description');
-        $post_excerpt = strtr($post_excerpt, ['.' => '', '  ' => ' ']);
+        $post_content = $request->get_param('description');
+        $post_content = strtr($post_content, ['.' => '', '  ' => ' ']);
 
         $user = get_user_by('login', 'weslley');
         $post_author = $user->ID;
 
         $data = array(
-            'post_type' => \Review\WordPress\CustomPostType\Foods::getKey(),
+            'post_type' => \Review\WordPress\CustomPostType\Coupon::getKey(),
             'post_title' => $post_title,
-            'post_excerpt' => $post_excerpt,
+            'post_content' => $post_content,
             'post_author' => $post_author,
             'meta_input' => $meta_input,
             'post_status' => 'publish',
@@ -76,10 +76,10 @@ final class Food extends \ReviewApi\Request
 
         if (! is_wp_error($post_id)) {
             $statusMsg = $isNewRegister ? 'criado' : 'atualizado';
-            return rest_ensure_response(["Food #{$post_id} - {$post_title} {$statusMsg} com sucesso!"]);
+            return rest_ensure_response(["Coupon #{$post_id} - {$post_title} {$statusMsg} com sucesso!"]);
         } else {
             $statusMsg = $isNewRegister ? 'criar' : 'atualizar';
-            return rest_ensure_response(new \WP_REST_Response('Erro ao {$statusMsg} Food: ' . $post_id->get_error_message(), 500));
+            return rest_ensure_response(new \WP_REST_Response('Erro ao {$statusMsg} Coupon: ' . $post_id->get_error_message(), 500));
         }
     }
 
@@ -91,8 +91,8 @@ final class Food extends \ReviewApi\Request
         }
 
         $post_id = $request->get_param('id');
-        $food = (new \Review\Repository\Food())->getById($post_id);
-        return rest_ensure_response($food);
+        $item = (new \Review\Repository\Coupon())->getById($post_id);
+        return rest_ensure_response($item);
     }
 
     function list(\WP_REST_Request $request)
@@ -113,40 +113,10 @@ final class Food extends \ReviewApi\Request
         return rest_ensure_response($foods);
     }
 
-    function delete(\WP_REST_Request $request)
-    {
-        $auth_result = $this->authenticate($request);
-        if (is_wp_error($auth_result)) {
-            return $auth_result;
-        }
-
-        $args = array(
-            'post_type' => \Review\WordPress\CustomPostType\Foods::getKey(),
-            'posts_per_page' => 1,
-        );
-
-        $posts_query = new \WP_Query($args);
-
-        if ($posts_query->have_posts()) {
-            while ($posts_query->have_posts()) {
-                $posts_query->the_post();
-                $post_id = get_the_ID();
-                wp_delete_post($post_id, true);
-                wp_reset_postdata();
-            }
-
-            wp_reset_query();
-
-            return rest_ensure_response('Todos os posts foram removidos com sucesso.');
-        } else {
-            return rest_ensure_response('Nenhum post encontrado para remover.');
-        }
-    }
-
     public function RestApiInit()
     {
         register_rest_route(
-            'api/v1/food',
+            'api/v1/coupon',
             '/add',
             array(
                 'methods' => 'POST',
@@ -156,7 +126,7 @@ final class Food extends \ReviewApi\Request
         );
 
         register_rest_route(
-            'api/v1/food',
+            'api/v1/coupon',
             '/get/(?P<id>\d+)',
             array(
                 'methods' => 'GET',
@@ -173,7 +143,7 @@ final class Food extends \ReviewApi\Request
         );
 
         register_rest_route(
-            'api/v1/food',
+            'api/v1/coupon',
             '/list',
             array(
                 'methods' => 'GET',
@@ -196,16 +166,6 @@ final class Food extends \ReviewApi\Request
                         },
                     ),
                 ),
-            )
-        );
-
-        register_rest_route(
-            'api/v1/food',
-            '/delete',
-            array(
-                'methods' => 'GET',
-                'callback' => array($this, 'delete'),
-                'permission_callback' => '__return_true',
             )
         );
     }

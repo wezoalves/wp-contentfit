@@ -9,7 +9,7 @@ Author: Weslley Alves
 require __DIR__ . '/vendor/autoload.php';
 
 
-include ('api/Food.php');
+//include ('api/Food.php');
 
 
 function getValueCPTReview($postId, $key, $type)

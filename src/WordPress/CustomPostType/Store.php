@@ -4,15 +4,15 @@ namespace Review\WordPress\CustomPostType;
 
 use Review\WordPress\Fields\Store as StoreFields;
 
-final class Store
+final class Store implements \Review\Interface\CustomPostTypeInterface
 {
     private static string $key = "store";
 
-    public static function getKey()
+    public static function getKey() : string
     {
         return self::$key;
     }
-    public static function init()
+    public static function init() : void
     {
         $labels = array(
             'name' => 'Lojas',
@@ -29,7 +29,7 @@ final class Store
             'not_found' => 'Nenhuma loja encontrada.',
             'not_found_in_trash' => 'Nenhuma loja encontrada na lixeira.'
         );
-    
+
         $args = array(
             'labels' => $labels,
             'public' => true,
@@ -46,7 +46,7 @@ final class Store
         add_action('save_post', [StoreFields::class, 'saveMeta']);
 
     }
-    public static function add_meta_boxes()
+    public static function add_meta_boxes() : void
     {
         add_meta_box(
             self::$key . '_meta_box',

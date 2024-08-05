@@ -2,17 +2,17 @@
 
 namespace Review\WordPress\CustomPostType;
 
-use Review\WordPress\Fields\Foods as FoodsFields;
+use Review\WordPress\Fields\Example as ExampleFields;
 
-final class Example
+final class Example implements \Review\Interface\CustomPostTypeInterface
 {
     private static string $key = "slug_custom_post_type";
 
-    public static function getKey()
+    public static function getKey() : string
     {
         return self::$key;
     }
-    public static function init()
+    public static function init() : void
     {
         $labels = array(
             'name' => '{Name Plural}',
@@ -34,24 +34,24 @@ final class Example
             'labels' => $labels,
             'public' => true,
             'has_archive' => true,
-            'menu_icon' => 'dashicons-carrot',
-            'supports' => array('title', 'editor', 'thumbnail','custom-fields'),
+            'menu_icon' => 'dashicons-carrot', // https://developer.wordpress.org/resource/dashicons/#hidden
+            'supports' => array('title', 'editor', 'thumbnail', 'custom-fields'),
             'show_in_rest' => true
         );
 
         register_post_type(self::$key, $args);
 
         add_action('add_meta_boxes', [self::class, 'add_meta_boxes']);
-        add_action('save_post', [FoodsFields::class, 'saveMeta']);
+        add_action('save_post', [ExampleFields::class, 'saveMeta']);
         add_action('rest_api_init', [new \Review\Api\Food(), 'RestFoodApiInit']);
     }
 
-    public static function add_meta_boxes()
+    public static function add_meta_boxes() : void
     {
         add_meta_box(
             self::$key . '_meta_box',
             '{Name Box In Admin}',
-            [FoodsFields::class, 'showMetaBox'],
+            [ExampleFields::class, 'showMetaBox'],
             self::$key,
             'advanced',
             'default'

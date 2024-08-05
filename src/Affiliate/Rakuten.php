@@ -2,7 +2,7 @@
 
 namespace Review\Affiliate;
 
-final class Rakuten
+final class Rakuten implements \Review\Interface\ProgramInterface
 {
     public string|null $affiliateId = null;
     public string|null $advertiserId = null;

@@ -2,7 +2,7 @@
 
 namespace Review\Affiliate;
 
-final class Amazon
+final class Amazon implements \Review\Interface\ProgramInterface
 {
     public string|null $affiliateId = null;
     public string|null $advertiserId = null;

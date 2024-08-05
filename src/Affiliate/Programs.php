@@ -18,7 +18,7 @@ final class Programs
 
         foreach ($regex as $file) {
             $fileName = basename($file[0], '.php');
-            if ($fileName === 'Programs') {
+            if ($fileName === 'Programs' || $fileName === 'ProgramInterface') {
                 continue;
             }
 

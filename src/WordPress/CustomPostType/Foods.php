@@ -3,16 +3,17 @@
 namespace Review\WordPress\CustomPostType;
 
 use Review\WordPress\Fields\Foods as FoodsFields;
+use ReviewApi\Food as FoodApi;
 
-final class Foods
+final class Foods implements \Review\Interface\CustomPostTypeInterface
 {
     private static string $key = "alimento";
 
-    public static function getKey()
+    public static function getKey() : string
     {
         return self::$key;
     }
-    public static function init()
+    public static function init() : void
     {
         $labels = array(
             'name' => 'Alimentos',
@@ -35,7 +36,7 @@ final class Foods
             'public' => true,
             'has_archive' => true,
             'menu_icon' => 'dashicons-carrot',
-            'supports' => array('title', 'editor', 'thumbnail','custom-fields'),
+            'supports' => array('title', 'editor', 'thumbnail', 'custom-fields'),
             'show_in_rest' => true
         );
 
@@ -43,10 +44,10 @@ final class Foods
 
         add_action('add_meta_boxes', [self::class, 'add_meta_boxes']);
         add_action('save_post', [FoodsFields::class, 'saveMeta']);
-        add_action('rest_api_init', [new \Review\Api\Food(), 'RestFoodApiInit']);
+        add_action('rest_api_init', [new FoodApi(), 'RestApiInit']);
     }
 
-    public static function add_meta_boxes()
+    public static function add_meta_boxes() : void
     {
         add_meta_box(
             self::$key . '_meta_box', // ID
