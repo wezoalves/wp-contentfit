@@ -10,7 +10,7 @@ use Review\Domain\AffiliateOffer;
 use Review\Model\Tenis as TenisModel;
 use Review\Model\Offer;
 
-final class Tenis
+final class Tenis implements \Review\Interface\RepositoryInterface
 {
     public string|null $source = null;
 
@@ -22,27 +22,24 @@ final class Tenis
     public function getById($post_id) : TenisModel
     {
         $post = get_post($post_id);
-        $key = \Review\WordPress\CustomPostType\Tenis::getKey();
-        $post_image = get_the_post_thumbnail_url($post_id, 'full');
-        $priceregular = get_post_meta($post_id, $key . '_priceregular', true);
-        $brand = get_post_meta($post_id, $key . '_brand', true);
-        $brandData = (new Store())->getById($brand);
-        $description = get_post_meta($post_id, $key . '_description', true);
-        $characteristics = get_post_meta($post_id, $key . '_characteristics', true);
-        $benefits = get_post_meta($post_id, $key . '_benefits', true);
-        $offers = get_post_meta($post_id, $key . '_offers', true) ?: [];
-        $typeId = get_post_meta($post_id, $key . '_type', true);
-        $type = TypeTenis::getById($typeId);
+        if (!$post) {
+            return null;
+        }
+        
+        return $this->createModel($post);
+    }
 
+    public function setSource(string $source = null)
+    {
+        $this->source = $source;
+    }
 
-
-        // Classification Explained
-
+    private function getClassificationExplained($post_id, $key)
+    {
         $classificationExplained = [];
-        foreach ((RatingTenis::getAll()) as $typeScore) {
+        foreach (RatingTenis::getAll() as $typeScore) {
             $keyClassification = "{$key}_{$typeScore['id']}";
-            $value = get_post_meta($post_id, $keyClassification, true);
-            $value = $value ? $value : 0;
+            $value = get_post_meta($post_id, $keyClassification, true) ?: 0;
             $classificationExplained[$keyClassification] = [
                 "id" => $keyClassification,
                 "value" => $value,
@@ -50,60 +47,61 @@ final class Tenis
                 "name" => $typeScore['name']
             ];
         }
+        return $classificationExplained;
+    }
 
-        // Populate List Offers to Tenis
+    private function populateOffersList($offers, $priceregular)
+    {
         $offersList = [];
         foreach ($offers as $offer) {
+            $discount = 0;
+            if ($priceregular && isset($offer['preco']) && $offer['preco']) {
+                $discount = round((($priceregular - $offer['preco']) / $priceregular) * 100, 0, PHP_ROUND_HALF_UP);
+            } elseif ($priceregular && isset($offer['price']) && $offer['price']) {
+                $discount = round((($priceregular - $offer['price']) / $priceregular) * 100, 0, PHP_ROUND_HALF_UP);
+            }
 
-            if (isset($offer['preco']) && isset($offer['loja'])) :
-                $discount = 0;
-                if ($priceregular && isset($offer['preco']) && $offer['preco']) {
-                    $descontoValor = $priceregular - $offer['preco'];
-                    $discount = ($descontoValor / $priceregular) * 100;
-                    $discount = round($discount, 0, PHP_ROUND_HALF_UP);
-                }
-
-                $offersList[] = (new Offer())
-                    ->setStore((new Store())->getById($offer['loja']))
-                    ->setStoreId($offer['loja'])
-                    ->setPrice($offer['preco'])
-                    ->setPriceFormated(number_format($offer['preco'], 2, ',', '.'))
-                    ->setUrl($offer['url'])
-                    ->setUrlOffer((new AffiliateOffer($offer['url'], $offer['loja'], $this->source))->getUrl())
-                    ->setDiscount($discount);
-            else :
-                $discount = 0;
-                if ($priceregular && isset($offer['price']) && $offer['price']) {
-                    $descontoValor = $priceregular - $offer['price'];
-                    $discount = ($descontoValor / $priceregular) * 100;
-                    $discount = round($discount, 0, PHP_ROUND_HALF_UP);
-                }
-
-                $offersList[] = (new Offer())
-                    ->setStore((new Store())->getById($offer['store']))
-                    ->setStoreId($offer['store'])
-                    ->setPrice($offer['price'])
-                    ->setPriceFormated(number_format($offer['price'], 2, ',', '.'))
-                    ->setUrl($offer['url'])
-                    ->setUrlOffer((new AffiliateOffer($offer['url'], $offer['store'], $this->source))->getUrl())
-                    ->setDiscount($discount);
-            endif;
-
-
+            $store_id = $offer['loja'] ?? $offer['store'];
+            $price = $offer['preco'] ?? $offer['price'];
+            $offersList[] = (new Offer())
+                ->setStore((new Store())->getById($store_id))
+                ->setStoreId($store_id)
+                ->setPrice($price)
+                ->setPriceFormated(number_format($price, 2, ',', '.'))
+                ->setUrl($offer['url'])
+                ->setUrlOffer((new AffiliateOffer($offer['url'], $store_id, $this->source))->getUrl())
+                ->setDiscount($discount);
         }
+        return $offersList;
+    }
 
-        // Rules Offer
+    private function createModel($post) : TenisModel
+    {
+        $post_id = $post->ID;
+        $key = \Review\WordPress\CustomPostType\Tenis::getKey();
+
+        $post_image = get_the_post_thumbnail_url($post_id, 'full');
+        $priceregular = get_post_meta($post_id, $key . '_priceregular', true);
+        $brandData = (new Store())->getById(get_post_meta($post_id, $key . '_brand', true));
+        $description = get_post_meta($post_id, $key . '_description', true);
+        $characteristics = get_post_meta($post_id, $key . '_characteristics', true);
+        $benefits = get_post_meta($post_id, $key . '_benefits', true);
+        $offers = get_post_meta($post_id, $key . '_offers', true) ?: [];
+        $type = TypeTenis::getById(get_post_meta($post_id, $key . '_type', true));
+
+        $classificationExplained = $this->getClassificationExplained($post_id, $key);
+        $offersList = $this->populateOffersList($offers, $priceregular);
+
         $offerBest = (new BestOffer())->getBest($offersList);
 
-
-        $tenis = (new TenisModel(
+        return (new TenisModel(
             $post_id,
             $key,
             $type,
             $post_image,
             [], // TODO create gallery with images product
             $description,
-            get_the_excerpt($post->ID),
+            get_the_excerpt($post_id),
             [], // TODO create classification global per type [[users: 10],[brand: 8],[jedi's : 7.6], etc etc ...]
             $classificationExplained,
             $characteristics,
@@ -112,16 +110,9 @@ final class Tenis
             $offerBest,
             $offersList,
             $brandData,
-            get_the_title($post->ID),
-            get_the_content($post->ID),
-            get_permalink($post->ID)
+            get_the_title($post_id),
+            get_the_content($post_id),
+            get_permalink($post_id)
         ));
-
-        return $tenis;
-    }
-
-    public function setSource(string $source = null)
-    {
-        $this->source = $source;
     }
 }

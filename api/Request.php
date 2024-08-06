@@ -48,7 +48,7 @@ class Request
         $numParts = count($hostParts);
 
         // Check for common second-level domains in Brazil
-        $secondLevelDomains = ['com.br', 'org.br', 'net.br', 'gov.br', 'edu.br', 'mil.br'];
+        $secondLevelDomains = ['com.br', 'org.br', 'net.br'];
 
         // If the domain ends with a known second-level domain, ensure we keep the last three parts
         if ($numParts > 2 && in_array($hostParts[$numParts - 2] . '.' . $hostParts[$numParts - 1], $secondLevelDomains)) {

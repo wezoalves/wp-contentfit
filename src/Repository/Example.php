@@ -4,7 +4,7 @@ namespace Review\Repository;
 
 use \Review\Model\Example as ExampleModel;
 
-final class Example
+final class Example implements \Review\Interface\RepositoryInterface
 {
     public function getById($post_id)
     {
@@ -52,5 +52,9 @@ final class Example
             wp_reset_postdata();
         }
         return $itemsArray;
+    }
+    private function createModel($post)
+    {
+        // implement
     }
 }

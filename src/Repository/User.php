@@ -2,7 +2,7 @@
 
 namespace Review\Repository;
 
-final class User
+final class User implements \Review\Interface\RepositoryInterface
 {
     /**
      * Summary of getUserDefault
@@ -22,5 +22,15 @@ final class User
     public function getUserDefault() : \WP_User|false
     {
         return get_user_by('login', 'weslley');
+    }
+
+    public function getById($id)
+    {
+        // implement
+    }
+
+    private function createModel($data)
+    {
+        // implement
     }
 }
