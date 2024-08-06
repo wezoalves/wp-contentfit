@@ -42,6 +42,8 @@ class Request
 
         // Remove 'www.' from the beginning of the host if it exists
         $host = preg_replace('/^www\./', '', $host);
+        $host = preg_replace('/^br.\./', '', $host);
+        $host = preg_replace('/^store.\./', '', $host);
 
         // Split the host into parts
         $hostParts = explode('.', $host);

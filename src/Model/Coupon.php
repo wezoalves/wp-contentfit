@@ -16,8 +16,8 @@ final class Coupon
     public string|null $endDate;
     public string|null $addDate;
     public string|null $terms;
-    public string|null $link;
-    public string|null $url;
+    public string|null $link; // link wordpress
+    public string|null $url; // url to store
 
 
     /**

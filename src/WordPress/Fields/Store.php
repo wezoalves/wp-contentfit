@@ -26,8 +26,14 @@ final class Store extends Fields
             ];
         }, (new \Review\Affiliate\Programs())->getAll());
 
+        $showInFront = [
+            ['id' => 1, 'title' => 'Sim'],
+            ['id' => 0, 'title' => 'Não']
+        ];
+
         $fields = [
             new Field("{$key}_type", "select", "Tipo", "", null, "TYPE", $types),
+            new Field("{$key}_showinfront", "select", "Exibir no Site", "", null, "DETAIL", $showInFront),
             new Field("{$key}_description", "textarea", "Descrição da Loja", "", null, "DETAIL", []),
             new Field("{$key}_domain", "text", "Domínio", "", null, "DETAIL", []),
             new Field("{$key}_url", "text", "Url", "https://...", null, "DETAIL", []),

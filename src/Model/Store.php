@@ -20,6 +20,7 @@ final class Store
     private string|null $raStoreId = null;
     private string|null $raScore = null;
     private array|null $affiliatePrograms = null;
+    private bool|null $showInFront = null;
 
 
     public function __construct(
@@ -40,6 +41,7 @@ final class Store
         string $raStoreId = null,
         string $raScore = null,
         array $affiliatePrograms = [],
+        bool $showInFront = false,
     ) {
         $this->id = $id;
         $this->keyCpt = $keyCpt;
@@ -57,6 +59,7 @@ final class Store
         $this->raStoreId = $raStoreId;
         $this->raScore = $raScore;
         $this->affiliatePrograms = $affiliatePrograms;
+        $this->showInFront = $showInFront;
     }
 
 
@@ -65,7 +68,7 @@ final class Store
      *
      * @return array|null
      */
-    public function getAffiliatePrograms(): array|null
+    public function getAffiliatePrograms() : array|null
     {
         return $this->affiliatePrograms;
     }
@@ -77,7 +80,7 @@ final class Store
      *
      * @return self
      */
-    public function setAffiliatePrograms(array|null $affiliatePrograms): self
+    public function setAffiliatePrograms(array|null $affiliatePrograms) : self
     {
         $this->affiliatePrograms = $affiliatePrograms;
 
@@ -89,7 +92,7 @@ final class Store
      *
      * @return string|null
      */
-    public function getRaScore(): string|null
+    public function getRaScore() : string|null
     {
         return $this->raScore;
     }
@@ -101,7 +104,7 @@ final class Store
      *
      * @return self
      */
-    public function setRaScore(string|null $raScore): self
+    public function setRaScore(string|null $raScore) : self
     {
         $this->raScore = $raScore;
 
@@ -113,7 +116,7 @@ final class Store
      *
      * @return string|null
      */
-    public function getRaStoreId(): string|null
+    public function getRaStoreId() : string|null
     {
         return $this->raStoreId;
     }
@@ -125,7 +128,7 @@ final class Store
      *
      * @return self
      */
-    public function setRaStoreId(string|null $raStoreId): self
+    public function setRaStoreId(string|null $raStoreId) : self
     {
         $this->raStoreId = $raStoreId;
 
@@ -137,7 +140,7 @@ final class Store
      *
      * @return string|null
      */
-    public function getRaShortName(): string|null
+    public function getRaShortName() : string|null
     {
         return $this->raShortName;
     }
@@ -149,7 +152,7 @@ final class Store
      *
      * @return self
      */
-    public function setRaShortName(string|null $raShortName): self
+    public function setRaShortName(string|null $raShortName) : self
     {
         $this->raShortName = $raShortName;
 
@@ -161,7 +164,7 @@ final class Store
      *
      * @return string|null
      */
-    public function getEmail(): string|null
+    public function getEmail() : string|null
     {
         return $this->email;
     }
@@ -173,7 +176,7 @@ final class Store
      *
      * @return self
      */
-    public function setEmail(string|null $email): self
+    public function setEmail(string|null $email) : self
     {
         $this->email = $email;
 
@@ -185,7 +188,7 @@ final class Store
      *
      * @return string|null
      */
-    public function getUrl(): string|null
+    public function getUrl() : string|null
     {
         return $this->url;
     }
@@ -197,7 +200,7 @@ final class Store
      *
      * @return self
      */
-    public function setUrl(string|null $url): self
+    public function setUrl(string|null $url) : self
     {
         $this->url = $url;
 
@@ -209,7 +212,7 @@ final class Store
      *
      * @return string|null
      */
-    public function getDomain(): string|null
+    public function getDomain() : string|null
     {
         return $this->domain;
     }
@@ -221,7 +224,7 @@ final class Store
      *
      * @return self
      */
-    public function setDomain(string|null $domain): self
+    public function setDomain(string|null $domain) : self
     {
         $this->domain = $domain;
 
@@ -233,7 +236,7 @@ final class Store
      *
      * @return string|null
      */
-    public function getLogoSvg(): string|null
+    public function getLogoSvg() : string|null
     {
         return $this->logoSvg;
     }
@@ -245,7 +248,7 @@ final class Store
      *
      * @return self
      */
-    public function setLogoSvg(string|null $logoSvg): self
+    public function setLogoSvg(string|null $logoSvg) : self
     {
         $this->logoSvg = $logoSvg;
 
@@ -257,7 +260,7 @@ final class Store
      *
      * @return string|null
      */
-    public function getLogo(): string|null
+    public function getLogo() : string|null
     {
         return $this->logo;
     }
@@ -269,7 +272,7 @@ final class Store
      *
      * @return self
      */
-    public function setLogo(string|null $logo): self
+    public function setLogo(string|null $logo) : self
     {
         $this->logo = $logo;
 
@@ -281,7 +284,7 @@ final class Store
      *
      * @return string|null
      */
-    public function getLink(): string|null
+    public function getLink() : string|null
     {
         return $this->link;
     }
@@ -293,7 +296,7 @@ final class Store
      *
      * @return self
      */
-    public function setLink(string|null $link): self
+    public function setLink(string|null $link) : self
     {
         $this->link = $link;
 
@@ -305,7 +308,7 @@ final class Store
      *
      * @return string|null
      */
-    public function getContent(): string|null
+    public function getContent() : string|null
     {
         return $this->content;
     }
@@ -317,7 +320,7 @@ final class Store
      *
      * @return self
      */
-    public function setContent(string|null $content): self
+    public function setContent(string|null $content) : self
     {
         $this->content = $content;
 
@@ -329,7 +332,7 @@ final class Store
      *
      * @return string|null
      */
-    public function getTitle(): string|null
+    public function getTitle() : string|null
     {
         return $this->title;
     }
@@ -341,7 +344,7 @@ final class Store
      *
      * @return self
      */
-    public function setTitle(string|null $title): self
+    public function setTitle(string|null $title) : self
     {
         $this->title = $title;
 
@@ -353,7 +356,7 @@ final class Store
      *
      * @return string|null
      */
-    public function getDescription(): string|null
+    public function getDescription() : string|null
     {
         return $this->description;
     }
@@ -365,7 +368,7 @@ final class Store
      *
      * @return self
      */
-    public function setDescription(string|null $description): self
+    public function setDescription(string|null $description) : self
     {
         $this->description = $description;
 
@@ -377,7 +380,7 @@ final class Store
      *
      * @return \Review\Model\SimpleType|null
      */
-    public function getType(): \Review\Model\SimpleType|null
+    public function getType() : \Review\Model\SimpleType|null
     {
         return $this->type;
     }
@@ -389,7 +392,7 @@ final class Store
      *
      * @return self
      */
-    public function setType(\Review\Model\SimpleType|null $type): self
+    public function setType(\Review\Model\SimpleType|null $type) : self
     {
         $this->type = $type;
 
@@ -401,7 +404,7 @@ final class Store
      *
      * @return string|null
      */
-    public function getKeyCpt(): string|null
+    public function getKeyCpt() : string|null
     {
         return $this->keyCpt;
     }
@@ -413,7 +416,7 @@ final class Store
      *
      * @return self
      */
-    public function setKeyCpt(string|null $keyCpt): self
+    public function setKeyCpt(string|null $keyCpt) : self
     {
         $this->keyCpt = $keyCpt;
 
@@ -425,7 +428,7 @@ final class Store
      *
      * @return string|null
      */
-    public function getId(): string|null
+    public function getId() : string|null
     {
         return $this->id;
     }
@@ -437,9 +440,33 @@ final class Store
      *
      * @return self
      */
-    public function setId(string|null $id): self
+    public function setId(string|null $id) : self
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of showInFront
+     *
+     * @return bool|null
+     */
+    public function getShowInFront(): bool|null
+    {
+        return $this->showInFront;
+    }
+
+    /**
+     * Set the value of showInFront
+     *
+     * @param bool|null $showInFront
+     *
+     * @return self
+     */
+    public function setShowInFront(bool|null $showInFront): self
+    {
+        $this->showInFront = $showInFront;
 
         return $this;
     }

@@ -10,7 +10,7 @@ final class Coupon implements \Review\Interface\RepositoryInterface
     {
         $post = get_post($post_id);
 
-        if (!$post) {
+        if (! $post) {
             return null;
         }
 
@@ -56,6 +56,7 @@ final class Coupon implements \Review\Interface\RepositoryInterface
             ->setAddDate(get_post_meta($post->ID, 'coupon_addDate', true))
             ->setTerms(get_post_meta($post->ID, 'coupon_terms', true))
             ->setLink(get_permalink($post->ID))
+            ->setStore(get_post_meta($post->ID, 'coupon_store', true))
             ->setUrl(get_post_meta($post->ID, 'coupon_url', true));
     }
 }

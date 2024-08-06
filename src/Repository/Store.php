@@ -114,6 +114,7 @@ final class Store implements \Review\Interface\RepositoryInterface
         $ra_score = get_post_meta($post->ID, $key . '_ra_score', true);
         $programs = get_post_meta($post->ID, $key . '_affiliate', true);
         $programsList = $this->createAffiliateProgramsList($programs);
+        $showInFront = get_post_meta($post->ID, $key . '_showinfront', true);
 
         return (new \Review\Model\Store())
             ->setId($post->ID)
@@ -131,7 +132,9 @@ final class Store implements \Review\Interface\RepositoryInterface
             ->setRaShortName($ra_shortname)
             ->setRaStoreId($ra_storeid)
             ->setRaScore($ra_score)
-            ->setAffiliatePrograms($programsList);
+            ->setAffiliatePrograms($programsList)
+            ->setShowInFront($showInFront)
+            ;
     }
 
     private function createAffiliateProgramsList($programs)

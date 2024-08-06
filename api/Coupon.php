@@ -25,6 +25,10 @@ final class Coupon extends \ReviewApi\Request implements \Review\Interface\ApiIn
     private function createItem(\WP_REST_Request $request)
     {
 
+        if (! $request->get_param('store_url')) {
+            return rest_ensure_response(new \WP_REST_Response("param store_url required", 500));
+        }
+
         $args = array(
             'post_type' => \Review\WordPress\CustomPostType\Coupon::getSlug(),
             'meta_key' => $this->getFieldValidator(),
@@ -46,16 +50,16 @@ final class Coupon extends \ReviewApi\Request implements \Review\Interface\ApiIn
             $meta_input[$field->getId()] = $request->get_param($field->getId()) ?? null;
         endforeach;
 
-
-        $urlCupom = $meta_input['coupon_url'] ?? null;
-        $urlCoupon = $this->getDomain($urlCupom);
+        // associate story by url final cupom
+        $paramUrlStore = $request->get_param('store_url');
+        $urlCoupon = $this->getDomain($paramUrlStore);
         $store = (new \Review\Repository\Store())->getByDomain($urlCoupon);
-        if(!$store){
-            return rest_ensure_response(new \WP_REST_Response("store not found {$urlCoupon}", 500));
+        if (! $store) {
+            return rest_ensure_response(new \WP_REST_Response("store not found {$urlCoupon} {$paramUrlStore}", 500));
         }
         $meta_input['coupon_store'] = $store->getId();
 
-        
+
         $post_title = $request->get_param('title');
         $post_title = ucfirst(mb_strtolower($post_title));
         $post_title = strtr($post_title, [
