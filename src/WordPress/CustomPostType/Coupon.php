@@ -41,7 +41,7 @@ final class Coupon implements \Review\Interface\CustomPostTypeInterface
             'public' => true,
             'has_archive' => true,
             'menu_icon' => 'dashicons-tag',
-            'supports' => array('title', 'editor'),
+            'supports' => array('title', 'editor', 'custom-fields'),
             'show_in_rest' => true
         );
 

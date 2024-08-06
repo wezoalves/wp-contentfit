@@ -40,7 +40,7 @@ final class Store implements \Review\Interface\CustomPostTypeInterface
             'public' => true,
             'has_archive' => true,
             'menu_icon' => 'dashicons-store',
-            'supports' => array('title', 'editor', 'thumbnail'),
+            'supports' => array('title', 'editor', 'thumbnail', 'custom-fields'),
             'show_in_rest' => true
         );
 
