@@ -29,7 +29,7 @@ final class User implements \Review\Interface\RepositoryInterface
         // implement
     }
 
-    private function createModel($data)
+    public function createModel($data)
     {
         // implement
     }

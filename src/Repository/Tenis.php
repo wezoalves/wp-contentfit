@@ -75,7 +75,7 @@ final class Tenis implements \Review\Interface\RepositoryInterface
         return $offersList;
     }
 
-    private function createModel($post) : TenisModel
+    public function createModel($post) : TenisModel
     {
         $post_id = $post->ID;
         $key = \Review\WordPress\CustomPostType\Tenis::getKey();

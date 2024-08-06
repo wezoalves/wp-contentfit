@@ -41,7 +41,7 @@ final class Coupon implements \Review\Interface\RepositoryInterface
         return $itemsArray;
     }
 
-    private function createModel($post)
+    public function createModel($post)
     {
         return (new CouponModel())
             ->setId($post->ID)

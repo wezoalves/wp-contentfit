@@ -41,7 +41,7 @@ final class Food implements \Review\Interface\RepositoryInterface
         return $foods;
     }
 
-    private function createModel($post)
+    public function createModel($post)
     {
         $composition = [];
         foreach (\Review\WordPress\Fields\Foods::fields() as $field) {

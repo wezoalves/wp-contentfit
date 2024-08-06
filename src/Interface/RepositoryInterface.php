@@ -6,5 +6,5 @@ interface RepositoryInterface
 {
 
     public function getById(int $id);
-    private function createModel($data);
+    public function createModel($data);
 }

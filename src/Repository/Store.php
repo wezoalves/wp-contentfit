@@ -98,7 +98,7 @@ final class Store implements \Review\Interface\RepositoryInterface
         return null;
     }
 
-    private function createModel($post)
+    public function createModel($post)
     {
         $key = \Review\WordPress\CustomPostType\Store::getKey();
         $post_image = get_the_post_thumbnail_url($post->ID, 'full');

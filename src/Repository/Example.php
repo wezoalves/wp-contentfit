@@ -53,7 +53,7 @@ final class Example implements \Review\Interface\RepositoryInterface
         }
         return $itemsArray;
     }
-    private function createModel($post)
+    public function createModel($post)
     {
         // implement
     }
