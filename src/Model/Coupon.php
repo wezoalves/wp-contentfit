@@ -25,7 +25,7 @@ final class Coupon
      *
      * @return string|null
      */
-    public function getId(): string|null
+    public function getId() : string|null
     {
         return $this->id;
     }
@@ -37,7 +37,7 @@ final class Coupon
      *
      * @return self
      */
-    public function setId(string|null $id): self
+    public function setId(string|null $id) : self
     {
         $this->id = $id;
 
@@ -49,7 +49,7 @@ final class Coupon
      *
      * @return string|null
      */
-    public function getTitle(): string|null
+    public function getTitle() : string|null
     {
         return $this->title;
     }
@@ -61,7 +61,7 @@ final class Coupon
      *
      * @return self
      */
-    public function setTitle(string|null $title): self
+    public function setTitle(string|null $title) : self
     {
         $this->title = $title;
 
@@ -73,7 +73,7 @@ final class Coupon
      *
      * @return string|null
      */
-    public function getDescription(): string|null
+    public function getDescription() : string|null
     {
         return $this->description;
     }
@@ -85,7 +85,7 @@ final class Coupon
      *
      * @return self
      */
-    public function setDescription(string|null $description): self
+    public function setDescription(string|null $description) : self
     {
         $this->description = $description;
 
@@ -97,7 +97,7 @@ final class Coupon
      *
      * @return int|null
      */
-    public function getPercentage(): int|null
+    public function getPercentage() : int|null
     {
         return $this->percentage;
     }
@@ -109,7 +109,7 @@ final class Coupon
      *
      * @return self
      */
-    public function setPercentage(int|null $percentage): self
+    public function setPercentage(int|null $percentage) : self
     {
         $this->percentage = $percentage;
 
@@ -121,7 +121,7 @@ final class Coupon
      *
      * @return string|null
      */
-    public function getAffiliatePlatform(): string|null
+    public function getAffiliatePlatform() : string|null
     {
         return $this->affiliatePlatform;
     }
@@ -133,7 +133,7 @@ final class Coupon
      *
      * @return self
      */
-    public function setAffiliatePlatform(string|null $affiliatePlatform): self
+    public function setAffiliatePlatform(string|null $affiliatePlatform) : self
     {
         $this->affiliatePlatform = $affiliatePlatform;
 
@@ -145,7 +145,7 @@ final class Coupon
      *
      * @return string|null
      */
-    public function getPromotionId(): string|null
+    public function getPromotionId() : string|null
     {
         return $this->promotionId;
     }
@@ -157,7 +157,7 @@ final class Coupon
      *
      * @return self
      */
-    public function setPromotionId(string|null $promotionId): self
+    public function setPromotionId(string|null $promotionId) : self
     {
         $this->promotionId = $promotionId;
 
@@ -169,10 +169,22 @@ final class Coupon
      *
      * @return string|null
      */
-    public function getCode(): string|null
+    public function getCode() : string|null
     {
         return $this->code;
     }
+
+    /**
+     * Get the value of code
+     *
+     * @return string|null
+     */
+    public function getCodeSecret() : string|null
+    {
+        $visible_part = '*****' . substr($this->code, -4); // Exibe os últimos 4 caracteres com asteriscos antes
+        return $visible_part;
+    }
+
 
     /**
      * Set the value of code
@@ -181,7 +193,7 @@ final class Coupon
      *
      * @return self
      */
-    public function setCode(string|null $code): self
+    public function setCode(string|null $code) : self
     {
         $this->code = $code;
 
@@ -193,7 +205,7 @@ final class Coupon
      *
      * @return string|null
      */
-    public function getIniDate(): string|null
+    public function getIniDate() : string|null
     {
         return $this->iniDate;
     }
@@ -205,7 +217,7 @@ final class Coupon
      *
      * @return self
      */
-    public function setIniDate(string|null $iniDate): self
+    public function setIniDate(string|null $iniDate) : self
     {
         $this->iniDate = $iniDate;
 
@@ -217,9 +229,9 @@ final class Coupon
      *
      * @return string|null
      */
-    public function getEndDate(): string|null
+    public function getEndDate($format = null) : string|null
     {
-        return $this->endDate;
+        return $this->convertToDate($this->endDate, $format);
     }
 
     /**
@@ -229,7 +241,7 @@ final class Coupon
      *
      * @return self
      */
-    public function setEndDate(string|null $endDate): self
+    public function setEndDate(string|null $endDate) : self
     {
         $this->endDate = $endDate;
 
@@ -241,7 +253,7 @@ final class Coupon
      *
      * @return string|null
      */
-    public function getAddDate(): string|null
+    public function getAddDate() : string|null
     {
         return $this->addDate;
     }
@@ -253,7 +265,7 @@ final class Coupon
      *
      * @return self
      */
-    public function setAddDate(string|null $addDate): self
+    public function setAddDate(string|null $addDate) : self
     {
         $this->addDate = $addDate;
 
@@ -265,7 +277,7 @@ final class Coupon
      *
      * @return string|null
      */
-    public function getTerms(): string|null
+    public function getTerms() : string|null
     {
         return $this->terms;
     }
@@ -277,7 +289,7 @@ final class Coupon
      *
      * @return self
      */
-    public function setTerms(string|null $terms): self
+    public function setTerms(string|null $terms) : self
     {
         $this->terms = $terms;
 
@@ -289,7 +301,7 @@ final class Coupon
      *
      * @return string|null
      */
-    public function getLink(): string|null
+    public function getLink() : string|null
     {
         return $this->link;
     }
@@ -301,7 +313,7 @@ final class Coupon
      *
      * @return self
      */
-    public function setLink(string|null $link): self
+    public function setLink(string|null $link) : self
     {
         $this->link = $link;
 
@@ -313,7 +325,7 @@ final class Coupon
      *
      * @return string|null
      */
-    public function getUrl(): string|null
+    public function getUrl() : string|null
     {
         return $this->url;
     }
@@ -325,7 +337,7 @@ final class Coupon
      *
      * @return self
      */
-    public function setUrl(string|null $url): self
+    public function setUrl(string|null $url) : self
     {
         $this->url = $url;
 
@@ -337,7 +349,7 @@ final class Coupon
      *
      * @return Store|null
      */
-    public function getStore(): Store|null
+    public function getStore() : Store|null
     {
         return $this->store;
     }
@@ -349,10 +361,18 @@ final class Coupon
      *
      * @return self
      */
-    public function setStore(Store|null $store): self
+    public function setStore(Store|null $store) : self
     {
         $this->store = $store;
 
         return $this;
+    }
+    private function convertToDate($date, $format = null)
+    {
+        if (! $format) {
+            $format = 'Y/m/d H:i:s';
+        }
+        $datetime = \DateTime::createFromFormat('Y-m-d H:i:s', $date);
+        return $datetime ? $datetime->format($format) : '';
     }
 }

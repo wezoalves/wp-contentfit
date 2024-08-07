@@ -20,38 +20,33 @@ final class Date implements \Review\Interface\ElementsInterface
         <script>
             document.getElementById('{$field->id}').addEventListener('input', function(e) {
                 let input = e.target;
-                let value = input.value.replace(/\D/g, ''); 
+                let value = input.value.replace(/\D/g, '');
                 let formattedValue = '';
 
-                let day = value.substring(0, 2);
-                let month = value.substring(2, 4);
-                let year = value.substring(4, 8);
+                let year = value.substring(0, 4);
+                let month = value.substring(4, 6);
+                let day = value.substring(6, 8);
                 let hour = value.substring(8, 10);
                 let minute = value.substring(10, 12);
                 let second = value.substring(12, 14);
-                
-                if (day.length === 2) {
-                    day = Math.min(parseInt(day, 10), 31).toString().padStart(2, '0');
-                }
-                if (day.length > 0) {
-                    formattedValue += day;
+
+                if (year.length === 4) {
+                    formattedValue += year;
                 }
                 if (month.length === 2) {
                     month = Math.min(parseInt(month, 10), 12).toString().padStart(2, '0');
                 }
                 if (month.length > 0) {
-                    formattedValue += '/' + month;
+                    formattedValue += '-' + month;
                 }
-                if (year.length === 4) {
-                    let currentYear = new Date().getFullYear();
-                    let maxYear = currentYear + 5;
-                    year = Math.min(parseInt(year, 10), maxYear).toString();
+                if (day.length === 2) {
+                    day = Math.min(parseInt(day, 10), 31).toString().padStart(2, '0');
                 }
-                if (year.length > 0) {
-                    formattedValue += '/' + year;
+                if (day.length > 0) {
+                    formattedValue += '-' + day;
                 }
                 if (hour.length === 2) {
-                    hour = Math.min(parseInt(hour, 10), 23).toString().padStart(2, '0'); 
+                    hour = Math.min(parseInt(hour, 10), 23).toString().padStart(2, '0');
                 }
                 if (hour.length > 0) {
                     formattedValue += ' ' + hour;
@@ -69,9 +64,14 @@ final class Date implements \Review\Interface\ElementsInterface
                     formattedValue += ':' + second;
                 }
 
-                input.value = formattedValue;
+                clearTimeout(input._formatTimeout);
+
+                input._formatTimeout = setTimeout(function() {
+                    input.value = formattedValue;
+                }, 500);
             });
         </script>
+
         HTML;
         return $tr;
     }

@@ -41,8 +41,58 @@ final class Coupon implements \Review\Interface\RepositoryInterface
         return $itemsArray;
     }
 
+    public function getNoExpired($per_page = 100, $page = 0, $search_term = null)
+    {
+        $current_date = current_time('d/m/Y H:i:s');
+        $current_date_ymd = $this->convertToDate($current_date);
+
+        $query = [
+            'posts_per_page' => $per_page,
+            'paged' => $page,
+            's' => $search_term,
+            'post_type' => 'cupom',
+            'orderby' => 'meta_value',
+            'order' => 'ASC',
+            'meta_key' => 'coupon_store',
+            'meta_query' => array(
+                array(
+                    'key' => 'coupon_endDate',
+                    'value' => $current_date_ymd,
+                    'compare' => '>=',
+                    'type' => 'DATETIME'
+                ),
+            ),
+        ];
+
+        $custom_types_query = new \WP_Query($query);
+        $stores = [];
+
+        if ($custom_types_query->have_posts()) {
+            while ($custom_types_query->have_posts()) {
+                $custom_types_query->the_post();
+                $post = get_post(get_the_ID());
+                $stores[$post->ID] = $this->createModel($post);
+            }
+            wp_reset_postdata();
+        }
+
+        return $stores;
+    }
+
+    private function convertToDate($date)
+    {
+        $datetime = \DateTime::createFromFormat('d/m/Y H:i:s', $date);
+        return $datetime ? $datetime->format('Ymd H:i:s') : '';
+    }
+
+
     public function createModel($post)
     {
+
+        $idStore = get_post_meta($post->ID, 'coupon_store', true);
+        $store = (new \Review\Repository\Store())->getById($idStore);
+
+
         return (new CouponModel())
             ->setId($post->ID)
             ->setTitle(get_the_title($post->ID))
@@ -56,7 +106,8 @@ final class Coupon implements \Review\Interface\RepositoryInterface
             ->setAddDate(get_post_meta($post->ID, 'coupon_addDate', true))
             ->setTerms(get_post_meta($post->ID, 'coupon_terms', true))
             ->setLink(get_permalink($post->ID))
-            ->setStore(get_post_meta($post->ID, 'coupon_store', true))
+            ->setStore($store)
             ->setUrl(get_post_meta($post->ID, 'coupon_url', true));
     }
+
 }

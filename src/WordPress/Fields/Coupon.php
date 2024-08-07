@@ -38,13 +38,13 @@ final class Coupon extends Fields
             new Field("{$key}_promotionId", "text", "ID Promoção", ""),
             new Field("{$key}_code", "text", "Código Cupom", ""),
 
-            new Field("{$key}_iniDate", "date", "Inicio Validade", "DD/MM/YYYY H:i:s"),
-            new Field("{$key}_endDate", "date", "Fim Validade", "DD/MM/YYYY H:i:s"),
-            new Field("{$key}_addDate", "date", "Disponibilizado", "DD/MM/YYYY H:i:s"),
+            new Field("{$key}_iniDate", "date", "Inicio Validade", "AAAA-MM-DD H:i:s"),
+            new Field("{$key}_endDate", "date", "Fim Validade", "AAAA-MM-DD H:i:s"),
+            new Field("{$key}_addDate", "date", "Disponibilizado", "AAAA-MM-DD H:i:s"),
 
             new Field("{$key}_terms", "textarea", "Termos de Uso", "", null, "DETAIL", []),
 
-            new Field("{$key}_url", "url", "Url", "https://www....."),
+            new Field("{$key}_url", "url", "Url", ""),
         ];
 
         return $fields;
