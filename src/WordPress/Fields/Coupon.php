@@ -30,7 +30,15 @@ final class Coupon extends Fields
             ];
         }, (new \Review\Affiliate\Programs())->getAll());
 
+
+        $isActive = [
+            ['id' => 1, 'title' => 'Sim'],
+            ['id' => 0, 'title' => 'Não']
+        ];
+
+
         $fields = [
+            new Field("{$key}_isActive", "select", "Está ativo", "", null, "DETAIL", $isActive),
             new Field("{$key}_store", "select", "Loja", "", null, "TYPE", $stores),
             new Field("{$key}_affiliatePlatform", "select", "Plataforma", "", null, "TYPE", $programs),
             new Field("{$key}_percentage", "number", "Desconto", "%"),

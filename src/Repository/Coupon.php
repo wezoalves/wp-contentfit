@@ -41,6 +41,42 @@ final class Coupon implements \Review\Interface\RepositoryInterface
         return $itemsArray;
     }
 
+    public function getByStore($storeId = null, $per_page = 100, $page = 0, $search_term = null)
+    {
+        $current_date = current_time('d/m/Y H:i:s');
+        $current_date_ymd = $this->convertToDate($current_date);
+
+        $query = [
+            'posts_per_page' => $per_page,
+            'paged' => $page,
+            's' => $search_term,
+            'post_type' => 'cupom',
+            'orderby' => 'meta_value',
+            'order' => 'ASC',
+            'meta_key' => 'coupon_store',
+            'meta_query' => array(
+                array(
+                    'key' => 'coupon_store',
+                    'value' => $storeId,
+                    'compare' => '=='
+                ),
+            ),
+        ];
+
+        $custom_types_query = new \WP_Query($query);
+        $stores = [];
+
+        if ($custom_types_query->have_posts()) {
+            while ($custom_types_query->have_posts()) {
+                $custom_types_query->the_post();
+                $post = get_post(get_the_ID());
+                $stores[$post->ID] = $this->createModel($post);
+            }
+            wp_reset_postdata();
+        }
+
+        return $stores;
+    }
     public function getNoExpired($per_page = 100, $page = 0, $search_term = null)
     {
         $current_date = current_time('d/m/Y H:i:s');
