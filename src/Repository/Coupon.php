@@ -41,7 +41,7 @@ final class Coupon implements \Review\Interface\RepositoryInterface
         return $itemsArray;
     }
 
-    public function getByStore($storeId = null, $per_page = 100, $page = 0, $search_term = null)
+    public function getByStore($storeId = null, $skipId = null, $per_page = 100, $page = 0, $search_term = null)
     {
         $current_date = current_time('d/m/Y H:i:s');
         $current_date_ymd = $this->convertToDate($current_date);
@@ -62,6 +62,10 @@ final class Coupon implements \Review\Interface\RepositoryInterface
                 ),
             ),
         ];
+
+        if($skipId){
+            $query['post__not_in'] = array($skipId);
+        }
 
         $custom_types_query = new \WP_Query($query);
         $stores = [];
