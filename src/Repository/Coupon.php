@@ -81,7 +81,7 @@ final class Coupon implements \Review\Interface\RepositoryInterface
 
         return $stores;
     }
-    public function getNoExpired($per_page = 100, $page = 0, $search_term = null)
+    public function getNoExpired($per_page = 100, $page = 0, $search_term = null, $orderTerm = 'coupon_endDate')
     {
         $current_date = current_time('d/m/Y H:i:s');
         $current_date_ymd = $this->convertToDate($current_date);
@@ -93,7 +93,7 @@ final class Coupon implements \Review\Interface\RepositoryInterface
             'post_type' => 'cupom',
             'orderby' => 'meta_value',
             'order' => 'ASC',
-            'meta_key' => 'coupon_store',
+            'meta_key' => $orderTerm,
             'meta_query' => array(
                 array(
                     'key' => 'coupon_endDate',
