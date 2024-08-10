@@ -28,9 +28,9 @@ final class Tenis extends Fields
                 'id' => $store->getId(),
                 'title' => $store->getTitle()
             ];
-        }, (new Store())->getByType(['BRAND','MULTIBRAND']));
-
+        }, (new Store())->getByType(['BRAND','SHOES']));
         
+                
         $types = array_map(function ($type) {
             return [
                 'id' => $type->getId(),
