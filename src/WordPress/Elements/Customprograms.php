@@ -32,6 +32,12 @@ final class Customprograms implements \Review\Interface\ElementsInterface
                 HTML;
             }
 
+            if(!isset($value['status'])){
+                $value['status'] = 0;
+            }
+            $checkedActive = $value['status'] == 1 ? 'checked' : '';
+            $checkedInactive = $value['status'] == 0 ? 'checked' : '';
+
             $tr .= <<<HTML
                 <div class="program form-grid">
                     <select class="regular-text field-half" name="{$field->id}[{$key}][platform]">                    
@@ -57,7 +63,19 @@ final class Customprograms implements \Review\Interface\ElementsInterface
                         name="{$field->id}[{$key}][comission]"
                         value="{$value['comission']}" 
                         placeholder="Comissão" />
-                    
+
+                    <label>Status</label>
+                    <div class="radio-group">
+                        <label for="active">
+                            <input type="radio" id="active" name="{$field->id}[{$key}][status]" {$checkedActive} value="1">
+                            Ativo
+                        </label>
+                        <label for="inactive">
+                            <input type="radio" id="inactive" name="{$field->id}[{$key}][status]" {$checkedInactive} value="0">
+                            Inativo
+                        </label>
+                    </div>
+                                    
 
                     <button class="remove-program button">Remover</button>
                     <br>

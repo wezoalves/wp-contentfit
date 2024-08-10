@@ -9,7 +9,7 @@ final class Rakuten implements \Review\Interface\ProgramInterface
     public string|null $source = null;
     private string $url = 'https://click.linksynergy.com/deeplink?id={{affiliateId}}&mid={{advertiserId}}&u1={{param_source}}&murl={{url_destination}}';
 
-    
+
 
     public function __construct(string $advertiserId = null, string $affiliateId = null, string $source = null)
     {
@@ -28,6 +28,8 @@ final class Rakuten implements \Review\Interface\ProgramInterface
 
     public function getUrl(string $url = null) : string
     {
+
+        $url = \Review\Utils\Url::clean($url);
 
         return strtr($this->url, [
             "{{advertiserId}}" => $this->advertiserId,

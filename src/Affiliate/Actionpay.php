@@ -28,6 +28,8 @@ final class Actionpay implements \Review\Interface\ProgramInterface
     public function getUrl(string $url = null) : string
     {
 
+        $url = \Review\Utils\Url::clean($url);
+        
         return strtr($this->url, [
             "{{advertiserId}}" => $this->advertiserId,
             "{{affiliateId}}" => $this->affiliateId,

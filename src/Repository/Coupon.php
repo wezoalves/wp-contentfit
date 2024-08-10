@@ -3,9 +3,28 @@
 namespace Review\Repository;
 
 use \Review\Model\Coupon as CouponModel;
+use Review\Domain\AffiliateOffer;
 
 final class Coupon implements \Review\Interface\RepositoryInterface
 {
+    public string|null $source = null;
+
+    public function __construct(string $source = null)
+    {
+        $this->source = $source;
+    }
+
+    public function getSource() : string|null
+    {
+        return $this->source;
+    }
+
+    public function setSource(string|null $source) : self
+    {
+        $this->source = $source;
+
+        return $this;
+    }
     public function getById($post_id)
     {
         $post = get_post($post_id);
@@ -63,7 +82,7 @@ final class Coupon implements \Review\Interface\RepositoryInterface
             ),
         ];
 
-        if($skipId){
+        if ($skipId) {
             $query['post__not_in'] = array($skipId);
         }
 
@@ -131,7 +150,7 @@ final class Coupon implements \Review\Interface\RepositoryInterface
 
         $idStore = get_post_meta($post->ID, 'coupon_store', true);
         $store = (new \Review\Repository\Store())->getById($idStore);
-
+        $urlOffer = (new AffiliateOffer(get_post_meta($post->ID, 'coupon_url', true), $idStore, $this->getSource()))->getUrl();
 
         return (new CouponModel())
             ->setId($post->ID)
@@ -147,7 +166,6 @@ final class Coupon implements \Review\Interface\RepositoryInterface
             ->setTerms(get_post_meta($post->ID, 'coupon_terms', true))
             ->setLink(get_permalink($post->ID))
             ->setStore($store)
-            ->setUrl(get_post_meta($post->ID, 'coupon_url', true));
+            ->setUrl($urlOffer);
     }
-
 }

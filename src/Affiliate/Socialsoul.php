@@ -27,11 +27,13 @@ final class Socialsoul implements \Review\Interface\ProgramInterface
     public function getUrl(string $url = null) : string
     {
 
+        $url = \Review\Utils\Url::clean($url);
+
         return strtr($this->url, [
             "{{advertiserId}}" => $this->advertiserId,
             "{{affiliateId}}" => $this->affiliateId,
             "{{param_source}}" => $this->source,
-            "{{url_destination}}" => $url
+            "{{url_destination}}" => urlencode($url)
         ]);
     }
 
