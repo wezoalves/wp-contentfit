@@ -142,11 +142,20 @@ final class Store implements \Review\Interface\RepositoryInterface
         $programsList = [];
         if ($programs) {
             foreach ($programs as $program) {
+
+                if (! isset($program['advertiser_id']) || 
+                    ! isset($program['publisher_id']) || 
+                    ! isset($program['comission']) || 
+                    ! isset($program['platform'])) {
+                    continue;
+                }
+                
                 $programsList[] = (new \Review\Model\AffiliateProgram())
                     ->setAdvertiserId($program['advertiser_id'])
                     ->setPublisherId($program['publisher_id'])
                     ->setComission(intval($program['comission']))
                     ->setPlatform($program['platform']);
+
             }
         }
         return $programsList;
